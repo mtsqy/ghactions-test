@@ -7,46 +7,395 @@
     <title>threejs-project-learn-game</title>
   </head>
   <body>
-<canvas id="world" aria-label="3D bridge construction scene"></canvas>
-<aside class="shell">
-  <div class="panel main-panel">
-    <div class="brand"><div class="brand-icon">⌁</div><div><div class="brand-name">GEOMETRY<span style="color:#46a994">/</span>LAB</div><div class="brand-sub">Bridge builder · 3D</div></div></div>
-    <div style="padding-top:19px">
-      <div class="eyebrow" id="mission-number">CHALLENGE 01 / 03</div>
-      <h1 id="mission-name">The first crossing</h1>
-      <p class="mission-desc" id="mission-description">The roadway is ready, but it can't carry a truck by itself. Build connected triangles to support the deck.</p>
-      <div class="level-pills"><button class="level active" data-level="0">01 · 12 m</button><button class="level" data-level="1">02 · 16 m</button><button class="level" data-level="2">03 · 20 m</button></div>
-    </div>
-    <section class="section">
-      <div class="section-title"><h2>Construction budget</h2><span class="small-tag" id="budget-state">ON TRACK</span></div>
-      <div class="stats"><div class="stat"><div class="stat-label">Spent / Budget</div><div class="stat-num"><span id="cost">0</span><small id="budget-total"> / 1200</small></div></div><div class="stat"><div class="stat-label">Steelwork</div><div class="stat-num"><span id="beam-count">6</span><small> beams</small></div></div><div class="stat"><div class="stat-label">Triangles</div><div class="stat-num" id="triangle-count">0</div></div><div class="stat"><div class="stat-label">Span</div><div class="stat-num" id="span-stat">12<small> m</small></div></div></div>
-      <div class="meter"><div id="budget-fill"></div></div>
-    </section>
-    <section class="section">
-      <div class="section-title"><h2>Build tools</h2><span class="eyebrow">B / E</span></div>
-      <div class="tool-row">
-        <button class="tool active" id="build-btn" title="Create structural beams (B)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19L12 4l8 15M4 19h16M8 12h8"/></svg> Draw beams</button>
-        <button class="tool" id="erase-btn" title="Remove nodes or beams (E)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m4 15 9-10 7 7-7 8H9zM12 20h9"/></svg> Eraser</button>
+<canvas aria-label="3D bridge construction scene" id="world">
+  </canvas>
+  <main aria-label="Bridge construction controls" class="shell">
+   <div class="panel main-panel">
+    <div class="brand">
+     <div class="brand-icon">
+      ⌁
+     </div>
+     <div>
+      <div class="brand-name">
+       GEOMETRY
+       <span class="brand-accent">
+        /
+       </span>
+       LAB
       </div>
-      <p style="color:#8a9da2;font-size:10px;line-height:1.55;margin:10px 1px 0">Click a joint, then another joint or empty grid point. Click a selected joint again to cancel. Right-drag to orbit.</p>
+      <div class="brand-sub">
+       Bridge builder &middot; 3D
+      </div>
+     </div>
+    </div>
+    <div class="mission-intro">
+     <div class="eyebrow" id="mission-number">
+      CHALLENGE 01 / 03
+     </div>
+     <h1 id="mission-name">
+      The first crossing
+     </h1>
+     <p class="mission-desc" id="mission-description">
+      The roadway is ready, but it can't carry a truck by itself. Build connected triangles to support the deck.
+     </p>
+     <div aria-label="Choose challenge" class="level-pills" role="group">
+      <button aria-pressed="true" class="level active" data-level="0" type="button">
+       01 &middot; 12 m
+      </button>
+      <button aria-pressed="false" class="level" data-level="1" type="button">
+       02 &middot; 16 m
+      </button>
+      <button aria-pressed="false" class="level" data-level="2" type="button">
+       03 &middot; 20 m
+      </button>
+     </div>
+    </div>
+    <section aria-labelledby="heading-construction-budget" class="section">
+     <div class="section-title">
+      <h2 id="heading-construction-budget">
+       Construction budget
+      </h2>
+      <span class="small-tag" id="budget-state">
+       ON TRACK
+      </span>
+     </div>
+     <div class="stats">
+      <div class="stat">
+       <div class="stat-label">
+        Spent / Budget
+       </div>
+       <div class="stat-num">
+        <span id="cost">
+         0
+        </span>
+        <small id="budget-total">
+         / 1200
+        </small>
+       </div>
+      </div>
+      <div class="stat">
+       <div class="stat-label">
+        Steelwork
+       </div>
+       <div class="stat-num">
+        <span id="beam-count">
+         6
+        </span>
+        <small>
+         beams
+        </small>
+       </div>
+      </div>
+      <div class="stat">
+       <div class="stat-label">
+        Triangles
+       </div>
+       <div class="stat-num" id="triangle-count">
+        0
+       </div>
+      </div>
+      <div class="stat">
+       <div class="stat-label">
+        Span
+       </div>
+       <div class="stat-num" id="span-stat">
+        12
+        <small>
+         m
+        </small>
+       </div>
+      </div>
+     </div>
+     <div class="meter">
+      <div id="budget-fill">
+      </div>
+     </div>
     </section>
-    <section class="section">
-      <div class="section-title"><h2>Beam material</h2><span class="eyebrow">1 / 2 / 3</span></div>
-      <div class="mat-row"><button class="mat" data-material="wood"><span class="swatch" style="background:#c28c55"></span><strong>Timber</strong><span>12 cr/m</span></button><button class="mat active" data-material="steel"><span class="swatch" style="background:#507d94"></span><strong>Steel</strong><span>17 cr/m</span></button><button class="mat" data-material="carbon"><span class="swatch" style="background:#73829e"></span><strong>Carbon</strong><span>28 cr/m</span></button></div>
-      <div class="panel-actions"><button class="sub-btn" id="starter-btn">Reset structure</button><button class="sub-btn" id="example-btn">Show example truss</button></div>
+    <section aria-labelledby="heading-build-tools" class="section">
+     <div class="section-title">
+      <h2 id="heading-build-tools">
+       Build tools
+      </h2>
+      <span class="eyebrow">
+       B / E
+      </span>
+     </div>
+     <div aria-label="Construction tools" class="tool-row" role="group">
+      <button aria-pressed="true" class="tool active" id="build-btn" title="Create structural beams (B)" type="button">
+       <svg fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+        <path d="M4 19L12 4l8 15M4 19h16M8 12h8">
+        </path>
+       </svg>
+       Draw beams
+      </button>
+      <button aria-pressed="false" class="tool" id="erase-btn" title="Remove nodes or beams (E)" type="button">
+       <svg fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+        <path d="m4 15 9-10 7 7-7 8H9zM12 20h9">
+        </path>
+       </svg>
+       Eraser
+      </button>
+     </div>
+     <p class="tool-help">
+      Click a joint, then another joint or empty grid point. Click a selected joint again to cancel. Right-drag to orbit.
+     </p>
     </section>
+    <section aria-labelledby="heading-beam-material" class="section">
+     <div class="section-title">
+      <h2 id="heading-beam-material">
+       Beam material
+      </h2>
+      <span class="eyebrow">
+       1 / 2 / 3
+      </span>
+     </div>
+     <div aria-label="Choose beam material" class="mat-row" role="group">
+      <button aria-pressed="false" class="mat" data-material="wood" type="button">
+       <span class="swatch swatch--timber">
+       </span>
+       <strong>
+        Timber
+       </strong>
+       <span>
+        12 cr/m
+       </span>
+      </button>
+      <button aria-pressed="true" class="mat active" data-material="steel" type="button">
+       <span class="swatch swatch--steel">
+       </span>
+       <strong>
+        Steel
+       </strong>
+       <span>
+        17 cr/m
+       </span>
+      </button>
+      <button aria-pressed="false" class="mat" data-material="carbon" type="button">
+       <span class="swatch swatch--carbon">
+       </span>
+       <strong>
+        Carbon
+       </strong>
+       <span>
+        28 cr/m
+       </span>
+      </button>
+     </div>
+     <div class="panel-actions">
+      <button class="sub-btn" id="starter-btn" type="button">
+       Reset structure
+      </button>
+      <button class="sub-btn" id="example-btn" type="button">
+       Show example truss
+      </button>
+     </div>
+    </section>
+   </div>
+   <div class="foot-actions">
+    <button class="primary-btn" id="test-btn" type="button">
+     <svg fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+      <path d="m8 5 11 7-11 7z">
+      </path>
+     </svg>
+     <span id="test-label">
+      Run load test
+     </span>
+    </button>
+    <button class="icon-btn" id="undo-btn" title="Undo last edit (Ctrl+Z)" type="button">
+     <svg fill="none" height="20" stroke="#3b6070" stroke-width="1.8" viewbox="0 0 24 24" width="20">
+      <path d="M9 14 4 9l5-5M4 9h10a6 6 0 0 1 0 12h-2">
+      </path>
+     </svg>
+    </button>
+   </div>
+  </main>
+  <header class="topbar">
+   <div class="topbar-title">
+    <span class="live-dot">
+    </span>
+    <span id="top-title">
+     STRUCTURAL DESIGN MODE
+    </span>
+   </div>
+   <div class="top-meta">
+    <span class="secondary">
+     GRID
+     <b>
+      1.0 m
+     </b>
+    </span>
+    <span class="secondary">
+     MAX BEAM
+     <b>
+      5.0 m
+     </b>
+    </span>
+    <span id="status-text">
+     READY TO BUILD
+    </span>
+    <div class="progress">
+     <div id="progress-fill">
+     </div>
+    </div>
+   </div>
+  </header>
+  <aside aria-label="Structural stress colors" class="legend">
+   <span>
+    <i class="legend-color--tension">
+    </i>
+    Tension
+   </span>
+   <span>
+    <i class="legend-color--compression">
+    </i>
+    Compression
+   </span>
+   <span>
+    <i class="legend-color--overload">
+    </i>
+    Overload
+   </span>
+  </aside>
+  <aside aria-label="Engineering feedback" class="float-panel">
+   <div class="eyebrow">
+    ENGINEERING NOTE
+   </div>
+   <h2 class="insight-heading" id="insight-title">
+    Why triangles?
+   </h2>
+   <div class="insight-diagram">
+    <svg fill="none" viewbox="0 0 90 70">
+     <path d="M8 59 44 9l37 50Z" fill="#e1f5ee" stroke="#409b85" stroke-linejoin="round" stroke-width="3">
+     </path>
+     <path d="M8 59h73" stroke="#f0a259" stroke-width="4">
+     </path>
+     <circle cx="8" cy="59" fill="#245968" r="4">
+     </circle>
+     <circle cx="44" cy="9" fill="#245968" r="4">
+     </circle>
+     <circle cx="81" cy="59" fill="#245968" r="4">
+     </circle>
+    </svg>
+    <p class="insight-text" id="insight-text">
+     A triangle cannot change shape without changing a side's length. Add diagonals to stop the road bending.
+    </p>
+   </div>
+   <div class="tiny-stat">
+    <span>
+     Road continuity
+    </span>
+    <b id="road-check">
+     Connected &checkmark;
+    </b>
+   </div>
+   <div class="tiny-stat">
+    <span>
+     Peak deflection
+    </span>
+    <b id="deflection-stat">
+     Not tested
+    </b>
+   </div>
+   <div class="tiny-stat">
+    <span>
+     Max member stress
+    </span>
+    <b id="stress-stat">
+     Not tested
+    </b>
+   </div>
+  </aside>
+  <div class="bottom-hint">
+   <span>
+    <span class="kbd">
+     Click
+    </span>
+    connect joints
+   </span>
+   <div class="hint-divider">
+   </div>
+   <span>
+    <span class="kbd">
+     Right drag
+    </span>
+    orbit
+   </span>
+   <div class="hint-divider">
+   </div>
+   <span>
+    <span class="kbd">
+     Scroll
+    </span>
+    zoom
+   </span>
+   <div class="hint-divider">
+   </div>
+   <span>
+    <span class="kbd">
+     Esc
+    </span>
+    cancel
+   </span>
   </div>
-  <div class="foot-actions"><button class="primary-btn" id="test-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m8 5 11 7-11 7z"/></svg><span id="test-label">Run load test</span></button><button class="icon-btn" id="undo-btn" title="Undo last edit (Ctrl+Z)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b6070" stroke-width="1.8"><path d="M9 14 4 9l5-5M4 9h10a6 6 0 0 1 0 12h-2"/></svg></button></div>
-</aside>
-<header class="topbar"><div class="topbar-title"><span class="live-dot"></span><span id="top-title">STRUCTURAL DESIGN MODE</span></div><div class="top-meta"><span class="secondary">GRID <b>1.0 m</b></span><span class="secondary">MAX BEAM <b>5.0 m</b></span><span id="status-text">READY TO BUILD</span><div class="progress"><div id="progress-fill"></div></div></div></header>
-<div class="legend"><span><i style="background:#4a9d9b"></i>Tension</span><span><i style="background:#eea35b"></i>Compression</span><span><i style="background:#d35f61"></i>Overload</span></div>
-<div class="float-panel"><div class="eyebrow">ENGINEERING NOTE</div><h2 style="margin-top:7px" id="insight-title">Why triangles?</h2><div class="insight-diagram"><svg viewBox="0 0 90 70" fill="none"><path d="M8 59 44 9l37 50Z" fill="#e1f5ee" stroke="#409b85" stroke-width="3" stroke-linejoin="round"/><path d="M8 59h73" stroke="#f0a259" stroke-width="4"/><circle cx="8" cy="59" r="4" fill="#245968"/><circle cx="44" cy="9" r="4" fill="#245968"/><circle cx="81" cy="59" r="4" fill="#245968"/></svg><p class="insight-text" id="insight-text">A triangle cannot change shape without changing a side's length. Add diagonals to stop the road bending.</p></div><div class="tiny-stat"><span>Road continuity</span><b id="road-check">Connected ✓</b></div><div class="tiny-stat"><span>Peak deflection</span><b id="deflection-stat">Not tested</b></div><div class="tiny-stat"><span>Max member stress</span><b id="stress-stat">Not tested</b></div></div>
-<div class="bottom-hint"><span><span class="kbd">Click</span> connect joints</span><div class="hint-divider"></div><span><span class="kbd">Right drag</span> orbit</span><div class="hint-divider"></div><span><span class="kbd">Scroll</span> zoom</span><div class="hint-divider"></div><span><span class="kbd">Esc</span> cancel</span></div>
-<div class="toast" id="toast" role="status"></div>
-<div class="sim-banner" id="sim-banner">🚚 &nbsp; Testing bridge stability.… <span id="sim-progress">0%</span></div>
-<div id="pointer-tip"></div>
-<div class="modal-backdrop" id="modal-backdrop"><div class="modal"><div class="modal-symbol" id="modal-symbol">✓</div><div class="eyebrow" id="modal-eyebrow">TEST COMPLETE</div><h2 id="modal-title">Bridge passed!</h2><p id="modal-body"></p><div class="result-stats"><div><strong id="result-cost">0</strong><small>Credits used</small></div><div><strong id="result-deflection">0 cm</strong><small>Max. sag</small></div><div><strong id="result-stress">0%</strong><small>Peak stress</small></div></div><div class="modal-actions"><button class="sub-btn" id="close-modal">Keep editing</button><button class="primary-btn" id="next-level">Next challenge →</button></div></div></div>
-
+  <div aria-live="polite" class="toast" id="toast" role="status">
+  </div>
+  <div aria-live="polite" class="sim-banner" hidden="" id="sim-banner">
+   🚚 &nbsp; Testing bridge stability&hellip;
+   <span id="sim-progress">
+    0%
+   </span>
+  </div>
+  <div hidden="" id="pointer-tip">
+  </div>
+  <div class="modal-backdrop" hidden="" id="modal-backdrop" role="presentation">
+   <div aria-describedby="modal-body" aria-labelledby="modal-title" aria-modal="true" class="modal" role="dialog">
+    <div class="modal-symbol" id="modal-symbol">
+     &checkmark;
+    </div>
+    <div class="eyebrow" id="modal-eyebrow">
+     TEST COMPLETE
+    </div>
+    <h2 id="modal-title">
+     Bridge passed!
+    </h2>
+    <p id="modal-body">
+    </p>
+    <div class="result-stats">
+     <div>
+      <strong id="result-cost">
+       0
+      </strong>
+      <small>
+       Credits used
+      </small>
+     </div>
+     <div>
+      <strong id="result-deflection">
+       0 cm
+      </strong>
+      <small>
+       Max. sag
+      </small>
+     </div>
+     <div>
+      <strong id="result-stress">
+       0%
+      </strong>
+      <small>
+       Peak stress
+      </small>
+     </div>
+    </div>
+    <div class="modal-actions">
+     <button class="sub-btn" id="close-modal" type="button">
+      Keep editing
+     </button>
+     <button class="primary-btn" id="next-level" type="button">
+      Next challenge &rarr;
+     </button>
+    </div>
+   </div>
+  </div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
