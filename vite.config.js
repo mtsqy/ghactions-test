@@ -1,8 +1,21 @@
 
 import { defineConfig } from 'vite';
 
-// export default defineConfig({
-//   base: process.env.GITHUB_PAGES === 'true'
-//     ? `/${process.env.GITHUB_REPOSITORY.split('/')[1]}/`
-//     : '/',
-// });
+export default defineConfig(({ command }) => ({
+  // GitHub Pages: https://mtsqy.github.io/ghactions-test/
+  // Local development uses "/".
+  base: command === 'build' ? '/ghactions-test/' : '/',
+
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    emptyOutDir: true,
+    sourcemap: false,
+    minify: true,
+  },
+
+  // Ensure Three.js is pre-bundled during development.
+  optimizeDeps: {
+    include: ['three'],
+  },
+}));
